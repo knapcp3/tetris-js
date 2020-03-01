@@ -1,0 +1,51 @@
+#game-wrapper {
+
+}
+
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+/*  */
+
+.game-info {
+  border: 1px solid black;
+  position: relative;
+}
+
+.game-info-content {
+  position: absolute; 
+  top: 0;
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+/*  */
+
+.game-board {
+  border: 1px solid brown;
+  position: relative;
+}
+
+.game-grid {
+
+}
+
+.chunk {
+  position: absolute;
+  background-color: green;
+}
+
+table {
+  /* border-collapse: collapse  */
+}
+
+.sky {
+  background: blue;
+}
