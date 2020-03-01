@@ -1,4 +1,4 @@
-import { createElem } from '../modules/utils'
+import { createElem, createChunkNode } from '../modules/utils'
 import config from '../config'
 
 export default class DOMDisplay {
@@ -24,25 +24,24 @@ export default class DOMDisplay {
         createElem(
           'span',
           { class: 'score-value' },
-          document.createTextNode('0')
-        )
+          document.createTextNode('0'),
+        ),
       ),
       createElem(
         'div',
         { class: 'level-nr' },
         document.createTextNode('Level: '),
-        createElem('span', { class: 'level-nr' }, document.createTextNode('1'))
-      )
+        createElem('span', { class: 'level-nr' }, document.createTextNode('1')),
+      ),
     )
     const gameInfo = createElem('div', { class: 'game-info' }, infoContent)
 
     gameInfo.style.width = `${infoWidth * scale}px`
-    gameInfo.style.height = `${boardRows.length * scale}px`
 
     const gameBoard = createElem(
       'div',
       { class: 'game-board' },
-      DOMDisplay.drawGrid(boardRows)
+      DOMDisplay.drawGrid(boardRows),
     )
 
     const game = createElem('div', { class: 'game' }, gameInfo, gameBoard)
@@ -53,60 +52,61 @@ export default class DOMDisplay {
   }
 
   static drawGrid(boardRows) {
-    const width = boardRows[0].length
-    const height = boardRows.length
     const { scale } = config
 
     const result = createElem(
-      'table',
+      'div',
       { class: 'game-grid' },
-      ...boardRows.map((row) =>
+      ...boardRows.map(row =>
         createElem(
-          'tr',
+          'div',
           { class: 'row' },
-          ...row.map(() => createElem('td', { class: 'sky' })),
-        )
+          ...row.map(() =>
+            createElem('div', {
+              class: 'sky',
+              style: `background-clip: content-box; width: ${scale}px; height: ${scale}px; padding: 1px`,
+            }),
+          ),
+        ),
       ),
     )
 
-    result.style.width = `${width * scale}px`
-    result.style.height = `${height * scale}px`
     return result
   }
 
-
   static drawTetros(inactiveChunks, activeTetro) {
-    const { scale } = config      
+    const { scale } = config
     const { currentSet, position } = activeTetro
     const { x, y } = position
 
-    const chunks = []
+    const chunkNodes = []
 
-    inactiveChunks.forEach(chunks.push)
+    inactiveChunks.forEach(chunk => chunkNodes.push(createChunkNode(chunk.vec.x, chunk.vec.y, scale)))
 
     currentSet.forEach((row, rInd) => {
       row.forEach((cell, cInd) => {
         if (cell) {
-          const chunk = createElem('div', { class: 'chunk' })
-          chunk.style.width = `${scale}px`
-          chunk.style.height = `${scale}px`
-          chunk.style.left = `${(x + cInd) * scale}px`
-          chunk.style.top = `${(y + rInd) * scale}px`
-          chunks.push(chunk)
+          const chunkXPos = x + cInd
+          const chunkYPos = y + rInd
+          chunkNodes.push(createChunkNode(chunkXPos, chunkYPos, scale))
+          // console.log('cInd: ' + cInd)
+          // console.log('L: ' + chunk.style.left)
+          // console.log('T: ' + chunk.style.top)
+          // console.log('W: ' + chunk.style.width)
         }
       })
     })
-
-    const result = createElem('div', {}, ...chunks)
+    // console.log(chunkNodes)
+    const result = createElem('div', {}, ...chunkNodes) // error
 
     return result
-  } 
+  }
 
   syncWithState(state) {
     const { inactiveChunks, activeTetro } = state
 
     if (this._tetrosLayer) this._tetrosLayer.remove()
-    
+
     this._tetrosLayer = DOMDisplay.drawTetros(inactiveChunks, activeTetro)
 
     this._gameBoard.appendChild(this._tetrosLayer)

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 #game-wrapper {
 
 }
@@ -5,6 +9,7 @@
 .game {
   display: flex;
   flex-direction: row;
+  align-items: stretch;
 }
 
 /*  */
@@ -29,12 +34,17 @@
 /*  */
 
 .game-board {
-  border: 1px solid brown;
   position: relative;
 }
 
 .game-grid {
+  display: flex;
+  flex-direction: column;
+}
 
+.game-grid .row {
+  display: flex;
+  flex-direction: row;
 }
 
 .chunk {
