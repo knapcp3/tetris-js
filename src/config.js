@@ -3,6 +3,6 @@ const config = {
   scale: 20,
   width: 10,
   height: 20,
-} 
+}
 
-export default config 
+export default config

@@ -9,12 +9,12 @@ export default class Tetrominoe {
     this._color = color
   }
 
-  static create({ sets, x, y }, color = 'black') {
+  static create({ sets, x, y }, color = 'black') { // TODO set initInd
     const initInd = 0
     return new Tetrominoe(sets, new Vector(x, y), initInd, color)
   }
 
-  update() {
+  updateAfterInterval() {
     return new Tetrominoe(
       this._sets,
       this._position.plus(new Vector(0, 1)),
@@ -35,12 +35,24 @@ export default class Tetrominoe {
       .filter(elem => elem)
   }
 
-  turnLeft() {
+  rotateLeft() {
     this._activeSetInd = (this._activeSetInd - 1) % this._sets.length
   }
 
-  turnRight() {
+  rotateRight() {
     this._activeSetInd = (this._activeSetInd + 1) % this._sets.length
+  }
+
+  goLeft() {
+    this._position = new Vector(this._position.x - 1, this._position.y)
+  }
+
+  goRight() {
+    this._position = new Vector(this._position.x + 1, this._position.y)
+  }
+
+  goDown() {
+    this._position = new Vector(this._position.x, this._position.y + 1)
   }
 
   get color() {
