@@ -25,7 +25,7 @@ export const tetrominoes = {
     // x: 3,
     // y: -2,
     x: 0,
-    y: -2,
+    y: -1,
   },
   // J: {
   //   sets: [

@@ -2,14 +2,19 @@ import { createElem, createChunkNode } from '../modules/utils'
 import config from '../config'
 
 export default class DOMDisplay {
-  constructor(parent, boardRows) {
-    // TODO: get field with game board
+  constructor(rootNode, boardRows) {
+    this._rootNode = rootNode
     const game = DOMDisplay.drawGame(boardRows)
-    this._dom = game.game
+    this._gameDOM = game.game
     this._gameBoard = game.gameBoard
     this._tetrosLayer = null
-    parent.appendChild(this._dom)
+    this._rootNode.appendChild(this._gameDOM)
+    // this.showStartScreen()
   }
+
+  // startGame() {
+
+  // }
 
   static drawGame(boardRows) {
     const { scale, infoWidth } = config
@@ -21,11 +26,7 @@ export default class DOMDisplay {
         'div',
         { class: 'score' },
         document.createTextNode('Score: '),
-        createElem(
-          'span',
-          { class: 'score-value' },
-          document.createTextNode('0'),
-        ),
+        createElem('span', { class: 'score-value' }, document.createTextNode('0')),
       ),
       createElem(
         'div',
@@ -38,16 +39,14 @@ export default class DOMDisplay {
 
     gameInfo.style.width = `${infoWidth * scale}px`
 
-    const gameBoard = createElem(
-      'div',
-      { class: 'game-board' },
-      DOMDisplay.drawGrid(boardRows),
-    )
+    const gameBoard = createElem('div', { class: 'game-board' }, DOMDisplay.drawGrid(boardRows))
 
     const game = createElem('div', { class: 'game' }, gameInfo, gameBoard)
+
     return {
       game,
       gameBoard,
+      gameInfo,
     }
   }
 
@@ -89,17 +88,50 @@ export default class DOMDisplay {
           const chunkXPos = x + cInd
           const chunkYPos = y + rInd
           chunkNodes.push(createChunkNode(chunkXPos, chunkYPos, scale))
-          // console.log('cInd: ' + cInd)
-          // console.log('L: ' + chunk.style.left)
-          // console.log('T: ' + chunk.style.top)
-          // console.log('W: ' + chunk.style.width)
         }
       })
     })
-    // console.log(chunkNodes)
-    const result = createElem('div', {}, ...chunkNodes) // error
+    const result = createElem('div', {}, ...chunkNodes)
 
     return result
+  }
+
+  showMenuScreen(buttons) {
+    const menuScreenDOM = createElem('div', {
+      class: 'menu-screen',
+    })
+
+    const menuScreenMenuDOM = createElem('div', {
+      class: 'menu',
+    })
+
+    buttons.forEach(button => {
+      menuScreenMenuDOM.appendChild(button)
+    })
+
+    menuScreenDOM.appendChild(menuScreenMenuDOM)
+    this._gameDOM.appendChild(menuScreenDOM)
+
+    DOMDisplay.prototype.removePauseScreen = () => {
+      menuScreenDOM.remove()
+    }
+  }
+
+  showPauseScreen() {
+    const resumeButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Resume'))
+    const restartButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Restart'))
+
+    const buttons = [resumeButton, restartButton]
+
+    this.showMenuScreen(buttons)
+  }
+
+  showStartScreen() {
+    const startButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Start'))
+
+    const buttons = [startButton]
+
+    this.showMenuScreen(buttons)
   }
 
   syncWithState(state) {
@@ -113,6 +145,6 @@ export default class DOMDisplay {
   }
 
   clear() {
-    this._dom.remove()
+    this._gameDOM.remove()
   }
 }

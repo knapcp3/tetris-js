@@ -8,9 +8,7 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "react-hooks"
-  ],
+  "plugins": ["react-hooks"],
   "rules": {
     "semi": 0,
     "no-trailing-spaces": 0,
@@ -20,26 +18,26 @@
     "no-constant-condition": 0,
     "no-await-in-loop": 0,
     "function-paren-newline": "warn",
+    "arrow-parens": ["error", "as-needed"],
+    "object-curly-newline": 0,
 
     "indent": [
       "error",
-      2
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
-    "max-len": [
-      "error",
-      120
-    ],
+    "max-len": ["error", 120],
     // "no-undef": "off",
     "import/prefer-default-export": "off",
-    "react/sort-comp": [
-      1
-    ],
-    "react-hooks/rules-of-hooks": "error", 
+    "react/sort-comp": [1],
+    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   },
   "env": {
     "browser": true,
     "node": true,
     "jest": true
-  },
+  }
 }

@@ -1,5 +1,6 @@
 import Vector from '../modules/Vector'
 import Chunk from './Chunk'
+import { cycle } from '../modules/utils'
 
 export default class Tetrominoe {
   constructor(sets, position, activeSetInd, color) {
@@ -9,7 +10,8 @@ export default class Tetrominoe {
     this._color = color
   }
 
-  static create({ sets, x, y }, color = 'black') { // TODO set initInd
+  static create({ sets, x, y }, color = 'black') {
+    // TODO set initInd
     const initInd = 0
     return new Tetrominoe(sets, new Vector(x, y), initInd, color)
   }
@@ -32,27 +34,32 @@ export default class Tetrominoe {
         }),
       )
       .reduce((acc, currentRow) => acc.concat(currentRow), [])
-      .filter(elem => elem)
+      .filter(elem => !!elem)
   }
 
   rotateLeft() {
-    this._activeSetInd = (this._activeSetInd - 1) % this._sets.length
+    const activeSetInd = cycle(this._activeSetInd - 1, 0, this._sets.length - 1)
+    return new Tetrominoe(this._sets, this._position, activeSetInd, this._color)
   }
 
   rotateRight() {
-    this._activeSetInd = (this._activeSetInd + 1) % this._sets.length
+    const activeSetInd = (this._activeSetInd + 1) % this._sets.length
+    return new Tetrominoe(this._sets, this._position, activeSetInd, this._color)
   }
 
   goLeft() {
-    this._position = new Vector(this._position.x - 1, this._position.y)
+    const position = new Vector(this._position.x - 1, this._position.y)
+    return new Tetrominoe(this._sets, position, this._activeSetInd, this._color)
   }
 
   goRight() {
-    this._position = new Vector(this._position.x + 1, this._position.y)
+    const position = new Vector(this._position.x + 1, this._position.y)
+    return new Tetrominoe(this._sets, position, this._activeSetInd, this._color)
   }
 
   goDown() {
-    this._position = new Vector(this._position.x, this._position.y + 1)
+    const position = new Vector(this._position.x, this._position.y + 1)
+    return new Tetrominoe(this._sets, position, this._activeSetInd, this._color)
   }
 
   get color() {
@@ -63,7 +70,15 @@ export default class Tetrominoe {
     return this._position
   }
 
+  get sets() {
+    return [...this._sets]
+  }
+
+  get activeSetInd() {
+    return this._activeSetInd
+  }
+
   get currentSet() {
-    return this._sets[this._activeSetInd]
+    return [...this._sets[this._activeSetInd]]
   }
 }
