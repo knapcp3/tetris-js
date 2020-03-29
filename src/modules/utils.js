@@ -7,12 +7,13 @@ export const createElem = (elementName, attributesOb, ...children) => {
   return elem
 }
 
-export const createChunkNode = (x, y, scale) => {
+export const createChunkNode = (x, y, scale, color) => {
   const chunk = createElem('div', { class: 'chunk' })
   chunk.style.width = `${scale - 2}px`
   chunk.style.height = `${scale - 2}px`
   chunk.style.left = `${x * scale + 1}px`
   chunk.style.top = `${y * scale + 1}px`
+  chunk.style.backgroundColor = color
   return chunk
 }
 
@@ -24,8 +25,12 @@ export function randomIndex(size) {
   return Math.floor(Math.random() * size)
 }
 
-export function randomVal(obj) {
-  return obj[randomIndex(Object.keys(obj).length)]
+export function randomValue(array) {
+  return array[randomIndex(array.length)]
+}
+
+export function randomObVal(obj) {
+  return obj[randomValue(Object.keys(obj))]
 }
 
 export function listenForKeys(...keys) {
@@ -34,7 +39,6 @@ export function listenForKeys(...keys) {
   const monitor = e => {
     if (keys.includes(e.key)) {
       result[e.key] = e.type === 'keydown'
-      console.log(result)
       e.preventDefault()
     }
   }

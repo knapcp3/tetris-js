@@ -1,9 +1,9 @@
-const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
-const dirPublic = path.resolve(__dirname, 'public');
-const dirSrc = path.resolve(__dirname, 'src');
-const dirBuild = path.resolve(__dirname, 'build');
+const dirPublic = path.resolve(__dirname, 'public')
+const dirSrc = path.resolve(__dirname, 'src')
+const dirBuild = path.resolve(__dirname, 'build')
 
 module.exports = {
   entry: path.resolve(dirSrc, 'index.js'),
@@ -22,6 +22,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
           },
         },
       },
@@ -42,4 +43,4 @@ module.exports = {
   mode: 'development',
   // Sourcemaps for the bundle
   devtool: 'source-map',
-};
+}

@@ -10,28 +10,17 @@ export default class Tetrominoe {
     this._color = color
   }
 
-  static create({ sets, x, y }, color = 'black') {
-    // TODO set initInd
+  static create({ sets, x, y, color }) {
     const initInd = 0
     return new Tetrominoe(sets, new Vector(x, y), initInd, color)
   }
 
-  updateAfterInterval() {
-    return new Tetrominoe(
-      this._sets,
-      this._position.plus(new Vector(0, 1)),
-      this._activeSetInd,
-      this._color,
-    )
-  }
-
   get chunks() {
     const { x, y } = this._position
+    const { color } = this
     return this._sets[this._activeSetInd]
       .map((row, rowInd) =>
-        row.map((elem, elemInd) => {
-          return elem ? new Chunk(new Vector(elemInd + x, rowInd + y)) : null
-        }),
+        row.map((elem, elemInd) => (elem ? new Chunk(new Vector(elemInd + x, rowInd + y), color) : null)),
       )
       .reduce((acc, currentRow) => acc.concat(currentRow), [])
       .filter(elem => !!elem)

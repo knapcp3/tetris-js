@@ -1,20 +1,21 @@
 import { createElem, createChunkNode } from '../modules/utils'
+import { EVENTS } from '../modules/consts'
 import config from '../config'
 
-export default class DOMDisplay {
-  constructor(rootNode, boardRows) {
-    this._rootNode = rootNode
-    const game = DOMDisplay.drawGame(boardRows)
-    this._gameDOM = game.game
-    this._gameBoard = game.gameBoard
-    this._tetrosLayer = null
-    this._rootNode.appendChild(this._gameDOM)
-    // this.showStartScreen()
+class DOMDisplay {
+  constructor(gameDOM, gameBoardDOM, gameInfoDOM, tetrosLayer) {
+    this._gameDOM = gameDOM
+    this._gameBoardDOM = gameBoardDOM
+    this._gameInfoDOM = gameInfoDOM
+    this._tetrosLayer = tetrosLayer
   }
 
-  // startGame() {
-
-  // }
+  static create(rootNode, width, height) {
+    const boardRows = Array.from({ length: height }).map(() => Array.from({ length: width }).map(() => 'sky'))
+    const { gameDOM, gameBoardDOM, gameInfoDOM } = DOMDisplay.drawGame(boardRows)
+    rootNode.appendChild(gameDOM)
+    return new DOMDisplay(gameDOM, gameBoardDOM, gameInfoDOM, null)
+  }
 
   static drawGame(boardRows) {
     const { scale, infoWidth } = config
@@ -24,29 +25,29 @@ export default class DOMDisplay {
       { class: 'game-info-content' },
       createElem(
         'div',
-        { class: 'score' },
+        { class: 'score-container' },
         document.createTextNode('Score: '),
-        createElem('span', { class: 'score-value' }, document.createTextNode('0')),
+        createElem('span', { class: 'score-number' }, document.createTextNode('0')),
       ),
       createElem(
         'div',
-        { class: 'level-nr' },
+        { class: 'level-container' },
         document.createTextNode('Level: '),
-        createElem('span', { class: 'level-nr' }, document.createTextNode('1')),
+        createElem('span', { class: 'level-number' }, document.createTextNode('1')),
       ),
     )
-    const gameInfo = createElem('div', { class: 'game-info' }, infoContent)
+    const gameInfoDOM = createElem('div', { class: 'game-info' }, infoContent)
 
-    gameInfo.style.width = `${infoWidth * scale}px`
+    gameInfoDOM.style.width = `${infoWidth * scale}px`
 
-    const gameBoard = createElem('div', { class: 'game-board' }, DOMDisplay.drawGrid(boardRows))
+    const gameBoardDOM = createElem('div', { class: 'game-board' }, DOMDisplay.drawGrid(boardRows))
 
-    const game = createElem('div', { class: 'game' }, gameInfo, gameBoard)
+    const gameDOM = createElem('div', { class: 'game' }, gameInfoDOM, gameBoardDOM)
 
     return {
-      game,
-      gameBoard,
-      gameInfo,
+      gameDOM,
+      gameBoardDOM,
+      gameInfoDOM,
     }
   }
 
@@ -75,19 +76,19 @@ export default class DOMDisplay {
 
   static drawTetros(inactiveChunks, activeTetro) {
     const { scale } = config
-    const { currentSet, position } = activeTetro
+    const { currentSet, position, color: activeTetrColor } = activeTetro
     const { x, y } = position
 
     const chunkNodes = []
 
-    inactiveChunks.forEach(chunk => chunkNodes.push(createChunkNode(chunk.vec.x, chunk.vec.y, scale)))
+    inactiveChunks.forEach(chunk => chunkNodes.push(createChunkNode(chunk.vec.x, chunk.vec.y, scale, chunk.color)))
 
     currentSet.forEach((row, rInd) => {
       row.forEach((cell, cInd) => {
         if (cell) {
           const chunkXPos = x + cInd
           const chunkYPos = y + rInd
-          chunkNodes.push(createChunkNode(chunkXPos, chunkYPos, scale))
+          chunkNodes.push(createChunkNode(chunkXPos, chunkYPos, scale, activeTetrColor))
         }
       })
     })
@@ -112,26 +113,24 @@ export default class DOMDisplay {
     menuScreenDOM.appendChild(menuScreenMenuDOM)
     this._gameDOM.appendChild(menuScreenDOM)
 
-    DOMDisplay.prototype.removePauseScreen = () => {
-      menuScreenDOM.remove()
+    DOMDisplay.prototype.removeMenuScreen = () => {
+      if (menuScreenDOM) menuScreenDOM.remove()
     }
   }
 
-  showPauseScreen() {
-    const resumeButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Resume'))
-    const restartButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Restart'))
-
-    const buttons = [resumeButton, restartButton]
-
-    this.showMenuScreen(buttons)
-  }
-
   showStartScreen() {
-    const startButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Start'))
+    return new Promise((resolve, _) => {
+      const startButton = createElem('button', { class: 'menu-button' }, document.createTextNode('Start'))
 
-    const buttons = [startButton]
+      startButton.addEventListener(EVENTS.CLICK, () => {
+        this.removeMenuScreen()
+        resolve()
+      })
 
-    this.showMenuScreen(buttons)
+      const buttons = [startButton]
+
+      this.showMenuScreen(buttons)
+    })
   }
 
   syncWithState(state) {
@@ -141,10 +140,31 @@ export default class DOMDisplay {
 
     this._tetrosLayer = DOMDisplay.drawTetros(inactiveChunks, activeTetro)
 
-    this._gameBoard.appendChild(this._tetrosLayer)
+    DOMDisplay.score = state.score
+    DOMDisplay.level = state.level
+
+    this._gameBoardDOM.appendChild(this._tetrosLayer)
   }
 
   clear() {
     this._gameDOM.remove()
   }
+
+  static get scoreNumberNode() {
+    return document.querySelector('.score-container .score-number')
+  }
+
+  static get levelNumberNode() {
+    return document.querySelector('.level-container .level-number')
+  }
+
+  static set score(value) {
+    DOMDisplay.scoreNumberNode.textContent = value
+  }
+
+  static set level(value) {
+    DOMDisplay.levelNumberNode.textContent = value
+  }
 }
+
+export default DOMDisplay

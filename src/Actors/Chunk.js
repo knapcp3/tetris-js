@@ -1,6 +1,7 @@
 export default class Chunk {
-  constructor(vec) {
+  constructor(vec, color) {
     this._vec = vec
+    this._color = color
   }
 
   equals(other) {
@@ -9,6 +10,10 @@ export default class Chunk {
 
   get vec() {
     return this._vec
+  }
+
+  get color() {
+    return this._color
   }
 
   set vec(v) {

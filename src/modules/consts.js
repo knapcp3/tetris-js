@@ -9,6 +9,7 @@ export const KEY_CODES = {
 
 export const EVENTS = {
   KEYDOWN: 'keydown',
+  CLICK: 'click',
 }
 
 export const ACTIONS = {
