@@ -13,6 +13,7 @@ module.exports = {
   },
   devServer: {
     contentBase: dirBuild,
+    host: '0.0.0.0',
   },
   module: {
     rules: [

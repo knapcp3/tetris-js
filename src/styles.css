@@ -41,7 +41,8 @@
 }
 
 .sky {
-  background: #33d9ff;
+	background: #33d9ff;
+	/* background: black; */
 }
 
 /* game stats */
