@@ -2,14 +2,14 @@ version: '3.7'
 
 services:
   tetris-app-dev:
-    container_name: tetris-app-dev
+    container_name: 'tetris-js-app-dev'
     build:
-      context: ../
-      dockerfile: ./docker/Dockerfile
+      context: '../'
+      dockerfile: './docker/Dockerfile'
     volumes:
       - '../:/app'
       - '/app/node_modules'
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
-      - CHOKIDAR_USEPOLLING=true
+      - 'CHOKIDAR_USEPOLLING=true'

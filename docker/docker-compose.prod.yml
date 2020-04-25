@@ -1,10 +1,8 @@
 version: '3.7'
 
 services:
-  tetris-app-prod:
-    container_name: tetris-app-prod
-    build:
-      context: ../
-      dockerfile: ./docker/Dockerfile.prod
+  tetris-js-prod:
+    container_name: 'tetris-js-app-prod'
+    image: 'knapkk/tetris-js:1.0'
     ports:
-      - '3005:80'
+      - '80:80'
