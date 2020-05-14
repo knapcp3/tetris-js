@@ -4,7 +4,7 @@
   "description": "tetris js",
   "main": "src/index.js",
   "directories": {
-    "test": "tests"
+    "test": "__tests__"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -24,6 +24,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^26.0.1",
     "style-loader": "^0.23.1",
     "webpack": "^4.29.3",
     "webpack-cli": "^3.2.3",
@@ -32,7 +33,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "start": "webpack-dev-server --port 8080 --hot --inline"
+    "start": "webpack-dev-server --port 8080 --hot --inline",
+    "test": "jest"
   },
   "author": "Jakub Knapik",
   "license": "ISC"

@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+  - node
+sudo: required
+env:
+  global:
+    - DOCKER_REPO=${DOCKER_USERNAME}/tetris-js
+
+stages:
+  - build
+  - test
+  - name: deploy
+    if: branch = master
+
+jobs:
+  include:
+    - stage: build
+      script:
+        - npm run build
+    - stage: test
+      script:
+        - npm run test
+    - stage: deploy
+      services:
+        - docker
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script: bash docker/docker-deploy.sh
+        on:
+          branch: master

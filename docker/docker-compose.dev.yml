@@ -4,8 +4,8 @@ services:
   tetris-app-dev:
     container_name: 'tetris-js-app-dev'
     build:
-      context: '../'
-      dockerfile: './docker/Dockerfile'
+      context: '.'
+      dockerfile: 'Dockerfile.dev'
     volumes:
       - '../:/app'
       - '/app/node_modules'

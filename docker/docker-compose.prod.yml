@@ -3,6 +3,6 @@ version: '3.7'
 services:
   tetris-js-prod:
     container_name: 'tetris-js-app-prod'
-    image: 'knapkk/tetris-js:1.0'
+    image: 'knapkk/tetris-js'
     ports:
       - '80:80'
