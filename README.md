@@ -4,7 +4,7 @@ Tetris in javascript created for fun
 
 [![Build Status](https://travis-ci.org/knapcp3/tetris-js.svg?branch=master)](https://travis-ci.org/knapcp3/tetris-js)
 
-live example: [http://ec2-3-133-93-188.us-east-2.compute.amazonaws.com/](http://ec2-3-133-93-188.us-east-2.compute.amazonaws.com/)
+live example: [http://ec2-3-127-222-154.eu-central-1.compute.amazonaws.com/](http://ec2-3-127-222-154.eu-central-1.compute.amazonaws.com/)
 
 
 ## Available Scripts
