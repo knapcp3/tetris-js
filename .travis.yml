@@ -6,6 +6,7 @@ env:
   global:
     - DOCKER_REPO=${DOCKER_USERNAME}/tetris-js
     - AWS_REGION=eu-central-1
+    - PATH=$HOME/.local/bin:$PATH
 
 stages:
   - build

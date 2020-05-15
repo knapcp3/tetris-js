@@ -1,6 +1,8 @@
 #!/bin/bash -e
 
 echo "Install awscli"
+pyenv global 3.7.1
+pip install -U pip
 pip install --user awscli
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 echo "Docker build"
