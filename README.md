@@ -1,6 +1,6 @@
 # tetris-js
 
-Tetris in javascript created for fun
+Tetris written in vanilla javascript
 
 [![Build Status](https://travis-ci.com/knapcp3/tetris-js.svg?branch=master)](https://travis-ci.com/knapcp3/tetris-js)
 
