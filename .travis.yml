@@ -31,4 +31,5 @@ jobs:
         skip_cleanup: true
         script: bash docker/docker-deploy.sh
         on:
-          branch: master
+          condition: false
+          # branch: master
