@@ -4,8 +4,6 @@ Tetris written in vanilla javascript
 
 [![Build Status](https://travis-ci.com/knapcp3/tetris-js.svg?branch=master)](https://travis-ci.com/knapcp3/tetris-js)
 
-live example: [http://ec2-3-127-222-154.eu-central-1.compute.amazonaws.com/](http://ec2-3-127-222-154.eu-central-1.compute.amazonaws.com/)
-
 
 ## Available Scripts
 
